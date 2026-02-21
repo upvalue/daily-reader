@@ -3,4 +3,5 @@ dist/
 *.db
 *.db-shm
 *.db-wal
+src/server/seed.sql
 /justfile

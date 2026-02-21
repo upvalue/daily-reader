@@ -10,7 +10,8 @@ CREATE TABLE books (
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   translator TEXT NOT NULL,
-  source_url TEXT NOT NULL
+  source_url TEXT NOT NULL,
+  work_id TEXT NOT NULL
 );
 
 CREATE TABLE passages (
@@ -30,8 +31,8 @@ CREATE TABLE bookmarks (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-INSERT INTO books (id, title, author, translator, source_url)
-VALUES (1, 'The Enchiridion', 'Epictetus', 'Elizabeth Carter', 'https://classics.mit.edu/Epictetus/epicench.html');
+INSERT INTO books (id, title, author, translator, source_url, work_id)
+VALUES (1, 'The Enchiridion', 'Epictetus', 'Elizabeth Carter', 'https://classics.mit.edu/Epictetus/epicench.html', 'enchiridion');
 
 INSERT INTO passages (book_id, position, title, content)
 VALUES (1, 1, 'Control and Freedom', 'Some things are in our control and others not. Things in our control

@@ -6,7 +6,9 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultDbPath = path.join(__dirname, "..", "..", "daily-reader.db");
 const dbPath = process.env.DB_PATH ?? defaultDbPath;
-const sqlPath = path.join(__dirname, "seed.sql");
+const primaryPath = path.join(__dirname, "seed.sql");
+const examplePath = path.join(__dirname, "seed.example.sql");
+const sqlPath = fs.existsSync(primaryPath) ? primaryPath : examplePath;
 
 const sql = fs.readFileSync(sqlPath, "utf-8");
 const db = new Database(dbPath);

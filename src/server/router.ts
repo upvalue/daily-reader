@@ -8,6 +8,14 @@ export const appRouter = router({
     timestamp: new Date().toISOString(),
   })),
 
+  listBooks: publicProcedure.query(async () => {
+    return db
+      .selectFrom("books")
+      .select(["id", "title", "author", "translator", "work_id"])
+      .orderBy("id")
+      .execute();
+  }),
+
   hello: publicProcedure
     .input(z.object({ name: z.string().optional() }).optional())
     .query(({ input }) => {

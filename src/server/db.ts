@@ -9,6 +9,7 @@ export interface BookTable {
   author: string;
   translator: string;
   source_url: string;
+  work_id: string;
 }
 
 export interface PassageTable {
