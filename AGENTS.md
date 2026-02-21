@@ -19,7 +19,7 @@ A minimal daily reading app. Read one passage at a time from classic texts. Book
 ```
 pnpm dev          # run client (5173) + server (3001) concurrently
 pnpm build        # production build
-pnpm db:seed      # seed database from src/server/seed.sql
+pnpm db:seed      # seed database from seed.base.sql + seed.private.sql (if present)
 ```
 
 ## Deployment
