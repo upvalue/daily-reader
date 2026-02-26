@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { trpc } from "../lib/trpc";
 import { ChevronLeft, ChevronRight, Bookmark, BookmarkCheck } from "lucide-react";
@@ -27,9 +28,22 @@ function PassageReader() {
   const hasPrev = positionNum > 1;
   const hasNext = positionNum < passageCount;
 
-  function goTo(pos: number) {
-    navigate({ to: "/read/$bookId/$position", params: { bookId, position: String(pos) } });
-  }
+  const goTo = useCallback(
+    (pos: number) => {
+      navigate({ to: "/read/$bookId/$position", params: { bookId, position: String(pos) } });
+    },
+    [navigate, bookId],
+  );
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === "ArrowLeft" && hasPrev) goTo(positionNum - 1);
+      if (e.key === "ArrowRight" && hasNext) goTo(positionNum + 1);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [goTo, hasPrev, hasNext, positionNum]);
 
   const data = passage.data;
 
