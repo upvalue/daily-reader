@@ -109,6 +109,28 @@ export const appRouter = router({
       return { ok: true };
     }),
 
+  getLastRead: publicProcedure.query(async () => {
+    const row = await db
+      .selectFrom("bookmarks")
+      .innerJoin("books", "books.id", "bookmarks.book_id")
+      .innerJoin("passages", (join) =>
+        join
+          .onRef("passages.book_id", "=", "bookmarks.book_id")
+          .onRef("passages.position", "=", "bookmarks.position"),
+      )
+      .select([
+        "bookmarks.book_id as bookId",
+        "bookmarks.position",
+        "books.title as bookTitle",
+        "passages.title as passageTitle",
+      ])
+      .orderBy("bookmarks.updated_at", "desc")
+      .limit(1)
+      .executeTakeFirst();
+
+    return row ?? null;
+  }),
+
   listPassages: publicProcedure
     .input(z.object({ bookId: z.number() }))
     .query(async ({ input }) => {
