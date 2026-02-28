@@ -36,6 +36,28 @@ function BookCard({ book }: { book: { id: number; title: string; author: string;
   );
 }
 
+function LastRead() {
+  const lastRead = trpc.getLastRead.useQuery();
+
+  if (!lastRead.data) return null;
+
+  const { bookId, position, bookTitle, passageTitle } = lastRead.data;
+  const label = passageTitle ? `${bookTitle}: ${passageTitle}` : `${bookTitle} #${position}`;
+
+  return (
+    <p className="text-sm text-muted-foreground">
+      Last read{" "}
+      <Link
+        to="/read/$bookId/$position"
+        params={{ bookId: String(bookId), position: String(position) }}
+        className="underline underline-offset-2 hover:text-foreground"
+      >
+        {label}
+      </Link>
+    </p>
+  );
+}
+
 function Index() {
   const books = trpc.listBooks.useQuery();
 
@@ -47,6 +69,7 @@ function Index() {
           <p className="text-sm text-muted-foreground mt-1">
             A quiet place to read the classics, one passage at a time.
           </p>
+          <LastRead />
         </div>
         <div className="columns-1 sm:columns-2 gap-4 space-y-4">
           {books.data?.map((book) => (
